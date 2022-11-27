@@ -45,8 +45,8 @@ variable "cpu_cores" {
 }
 
 variable "cpu_type" {
-  type = string
-  default = "host"
+  type        = string
+  default     = "host"
   description = "The emulated CPU type."
 }
 
