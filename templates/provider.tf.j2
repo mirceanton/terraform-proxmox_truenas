@@ -1,0 +1,23 @@
+# ===============================================
+# Terraform configuration
+# ===============================================
+terraform {
+  required_providers {
+    proxmox = {
+      source = "bpg/proxmox"
+      version = "0.7.0"
+    }
+  }
+}
+
+# ===============================================
+# Proxmox Provider Configuration
+# ===============================================
+provider "proxmox" {
+  virtual_environment {
+    endpoint = "{{ proxmox_url }}"
+    username = "{{ proxmox_username }}@pam"
+    password = "{{ proxmox_password }}"
+    insecure = true
+  }
+}
