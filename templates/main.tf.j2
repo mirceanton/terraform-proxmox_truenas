@@ -38,8 +38,7 @@ resource "proxmox_virtual_environment_vm" "truenas" {
   disk {
     datastore_id = "{{ disk.storage }}"
     size         = "{{ disk.size }}"
-    interface    = "scsi{{ loop.index }}"
-    iothread     = {{ disk.iothread | default(true) | string | lower }}
+    interface    = "scsi{{ loop.index - 1 }}"
   }
   {% endfor %}
 
