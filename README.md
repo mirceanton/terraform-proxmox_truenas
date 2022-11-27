@@ -26,9 +26,9 @@ Here's an empty sample for the `.auto.tfvars` file, for you to customize:
 # =============================================
 # PROXMOX CONNECTION
 # =============================================
-proxmox_api_url = ""
-proxmox_api_username = ""
-proxmox_api_password = ""
+proxmox_url = ""
+proxmox_username = ""
+proxmox_password = ""
 
 # =============================================
 # GENERAL
@@ -72,9 +72,9 @@ They are intended to be formatted by an Ansible task, such as:
   gather_facts: false
 
   vars:
-    proxmox_api_url: "https://1.2.3.4:8006/api2/json"
-    proxmox_api_username: "username"
-    proxmox_api_password: "password"
+    proxmox_url: "https://1.2.3.4:8006/api2/json"
+    proxmox_username: "username"
+    proxmox_password: "password"
     truenas_vm_target_node: pve01
     truenas_vm_id: 105
     truenas_vm_clone_id: 1100
@@ -117,12 +117,12 @@ For more details on certain variables, refer to the official module [documentati
 
 ``` yml
 # Proxmox Connection Params
-proxmox_api_url:                    # [Required] The URL for the Proxmox API endpoint
-                                    # Format: https://a.b.c.d:8006/api2/json
-pm_api_username:                    # [Required] The username to authenticate
-pm_api_password:                    # [Required] The password for the given username
+proxmox_url:                    # [Required] The URL for the Proxmox API endpoint
+                                    # Format: https://a.b.c.d:8006
+proxmox_username:                    # [Required] The username to authenticate
+proxmox_password:                    # [Required] The password for the given username
 
-# truenas VM Params
+# TrueNAS VM Params
 truenas_vm_name: TrueNAS          # [Optional] The name of the VM
 truenas_vm_target_node:            # [Required] The name of the node on which to deploy the VM
 truenas_vm_id: 105                 # [Optional] The ID of the VM
@@ -131,14 +131,17 @@ truenas_vm_clone_id: 1100          # [Optional] The name of the VM to clone
 truenas_vm_cpu_type: host          # [Optional] The type of CPU to assign to the VM
 truenas_vm_cpu_cores: 4            # [Optional] The number of threads to assign to the VM
 truenas_vm_memory: 8192            # [Optional] The amount of RAM in mb to assign to the VM
-truenas_vm_vga_type: qxl           # [Optional] The type of VGA device. https://registry.terraform.io/providers/bpg/proxmox/latest/docs/resources/virtual_environment_vm#vga
+truenas_vm_vga_type: qxl           # [Optional] The type of VGA device. 
 truenas_vm_vga_memory: 64          # [Optional] Sets the VGA memory (in MiB). Has no effect with serial display type.
-truenas_vm_disks:                  # [Required] List of disks to assign to the VM https://registry.terraform.io/providers/bpg/proxmox/latest/docs/resources/virtual_environment_vm#disk
+truenas_vm_disks:                  # [Required] List of disks to assign to the VM 
   - size: 32              # [Required] The size of the disk in Gb
     storage: "local-zfs"  # [Required] The storage device for the VM
 truenas_vm_networks:           # [Required] List of network devices
   - bridge: vmbr0     # [Required] The name of the network bridge to attach to. (vmbr0, vmbr1 etc)
     model: virtio     # [Optional] The NIC model
+
+# TrueNAS Pool
+truenas_vm_pool: Storage
 ```
 
 ## License
