@@ -36,9 +36,9 @@ resource "proxmox_virtual_environment_vm" "truenas" {
   {% for disk in truenas_vm_disks %}
   disk {
     datastore_id = "{{ disk.storage }}"
-    size    = "{{ disk.size }}"
+    size         = "{{ disk.size }}"
     interface    = "scsi{{ loop.index }}"
-    iothread = {{ disk.iothread | default(true) | string | lower }}
+    iothread     = {{ disk.iothread | default(true) | string | lower }}
   }
   {% endfor %}
 
