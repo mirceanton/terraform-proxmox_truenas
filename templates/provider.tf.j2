@@ -16,7 +16,7 @@ terraform {
 provider "proxmox" {
   virtual_environment {
     endpoint = "{{ proxmox_api_url }}"
-    username = "{{ ansible_user }}"
+    username = "{{ ansible_user }}@pam"
     password = "{{ ansible_ssh_pass }}"
     insecure = true
   }
