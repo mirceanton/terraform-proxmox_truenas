@@ -1,0 +1,68 @@
+{% if truenas_pool_name is defined %}
+resource "proxmox_virtual_environment_pool" "storage_services_pool" {
+  pool_id = "{{ truenas_pool_name }}"
+}
+{% endif %}
+
+resource "proxmox_virtual_environment_vm" "truenas" {
+  name        = {{ truenas_vm_name }}
+  description = {{ truenas_vm_description | default('') }}
+
+  node_name = {{ truenas_vm_target_node }}
+  vm_id     = {{ truenas_vm_id }}
+  on_boot   = {{ truenas_vm_autoboot | default(true) | string | lower }}
+  
+  {% if truenas_pool_name is defined %}
+  pool_id = proxmox_virtual_environment_pool.storage_services_pool.pool_id
+  {% endif %}
+
+  agent {
+    enabled = false
+  }
+
+  clone {
+    vm_id = {{ truenas_vm_clone_id }}
+  }
+
+  cpu {
+    cores = {{ truenas_cpu_cores | default(4) }}
+    type  = {{ truenas_vm_cpu_type | default('host') }}
+  }
+
+  memory {
+    dedicated = {{ truenas_vm_memory | default(8192) }}
+  }
+
+  {% for disk in truenas_vm_disks %}
+  disk {
+    datastore_id = "{{ disk.storage }}"
+    size    = "{{ disk.size }}"
+    interface    = "scsi{{ loop.index }}"
+    iothread = {{ disk.iothread | default(true) | string | lower }}
+  }
+  {% endfor %}
+
+  {% for nic in truenas_vm_networks %}
+  network_device {
+    bridge   = "{{ nic.bridge }}"
+    model    = "{{ nic.model | default('virtio' ) }}"
+  }
+  {% endfor %}
+
+  operating_system {
+    type = "l26"
+  }
+
+  vga {
+    type   = "{{ truenas_vm_vga_type | default('qxl') }}"
+    memory = {{ truenas_vm_vga_memory | default(64) }}
+  }
+
+  lifecycle {
+    ignore_changes = [
+      network_interface_names,
+      ipv4_addresses,
+      ipv6_addresses
+    ]
+  }
+}
