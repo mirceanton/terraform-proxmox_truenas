@@ -26,7 +26,7 @@ resource "proxmox_virtual_environment_vm" "truenas" {
 
   cpu {
     cores = {{ truenas_cpu_cores | default(4) }}
-    type  = {{ truenas_vm_cpu_type | default('host') }}
+    type  = "{{ truenas_vm_cpu_type | default('host') }}"
   }
 
   memory {
@@ -34,6 +34,7 @@ resource "proxmox_virtual_environment_vm" "truenas" {
   }
 
   {% for disk in truenas_vm_disks %}
+
   disk {
     datastore_id = "{{ disk.storage }}"
     size         = "{{ disk.size }}"
@@ -43,6 +44,7 @@ resource "proxmox_virtual_environment_vm" "truenas" {
   {% endfor %}
 
   {% for nic in truenas_vm_networks %}
+
   network_device {
     bridge   = "{{ nic.bridge }}"
     model    = "{{ nic.model | default('virtio' ) }}"
