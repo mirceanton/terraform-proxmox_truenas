@@ -5,10 +5,10 @@ resource "proxmox_virtual_environment_pool" "storage_services_pool" {
 {% endif %}
 
 resource "proxmox_virtual_environment_vm" "truenas" {
-  name        = "{{ truenas_vm_name }}""
-  description = "{{ truenas_vm_description | default('') }}""
+  name        = "{{ truenas_vm_name }}"
+  description = "{{ truenas_vm_description | default('') }}"
 
-  node_name = "{{ truenas_vm_target_node }}""
+  node_name = "{{ truenas_vm_target_node }}"
   vm_id     = {{ truenas_vm_id }}
   on_boot   = {{ truenas_vm_autoboot | default(true) | string | lower }}
   
